@@ -7,6 +7,6 @@ export default function Hotspot({ position = [0, 0, 0], label, color = "#fff", o
       onClick={onClick}
       aria-label={`Show ${label}`}
       title={`Show ${label}`}
-    />
+    ><span className="hotspot-label">{label}</span></button>
   );
 }

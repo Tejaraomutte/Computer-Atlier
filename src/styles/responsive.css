@@ -1,5 +1,5 @@
 @media (max-width:1250px) {
-  .explorer-layout { grid-template-columns:250px minmax(450px,1fr); }
+  .explorer-layout { grid-template-columns:250px minmax(450px,1fr); align-items:start; }
   .info-panel { grid-column:1/-1; min-height:auto; }
   .content-grid, .home-grid { grid-template-columns:1fr 1fr; }
   .header-search { width:190px; }
@@ -9,9 +9,9 @@
   .main-nav { display:none; }
   .header-search { margin-left:auto; }
   .explorer-layout { width:calc(100% - 24px); display:flex; flex-direction:column; }
-  .library-panel { min-height:auto; }
+  .library-panel { height:auto; min-height:auto; max-height:none; overflow:visible; }
   .component-list { display:grid; grid-template-columns:repeat(2,1fr); }
-  .viewer-panel { min-height:650px; }
+  .viewer-panel { height:650px; min-height:650px; }
   .home-feature { flex-direction:column; }
   .simulation-grid, .content-grid, .home-grid, .lesson-grid { grid-template-columns:1fr; }
 }
@@ -23,6 +23,7 @@
   .page-heading h1 { font-size:40px; }
   .hero h1 { font-size:52px; }
   .component-list { grid-template-columns:1fr; }
+  .viewer-panel { height:620px; min-height:620px; }
   .viewer-toolbar { left:10px; top:auto; bottom:55px; transform:none; width:auto; flex-direction:row; }
   .toolbar-button { min-height:48px; width:52px; }
   .viewer-tip { right:10px; top:10px; width:155px; }

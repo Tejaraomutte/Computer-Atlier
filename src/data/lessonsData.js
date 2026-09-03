@@ -1,4 +1,6 @@
-export const lessons = [
+import { architectureComponents } from "./architectureData.js";
+
+const foundationalLessons = [
   {
     id: "cpu-basics",
     title: "CPU Organization",
@@ -43,3 +45,19 @@ export const lessons = [
     ]
   }
 ];
+
+const componentLessons = architectureComponents.map((component) => ({
+  id: `component-${component.id}`,
+  title: `${component.name} Essentials`,
+  category: component.category,
+  duration: "12 min",
+  level: "Beginner",
+  summary: component.description,
+  sections: [
+    { title: "What it does", text: component.description },
+    { title: "Key facts", text: component.facts.map(([label, value]) => `${label}: ${value}`).join(" · ") },
+    { title: "Why it matters", text: component.importance }
+  ]
+}));
+
+export const lessons = [...foundationalLessons, ...componentLessons];

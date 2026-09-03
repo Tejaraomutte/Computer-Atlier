@@ -14,11 +14,11 @@ export default function ArchitectureBlock({ id, label, position, color, selected
 
   return (
     <group position={position}>
-      <mesh ref={ref} castShadow receiveShadow onClick={(e) => { e.stopPropagation(); onClick(id); }} scale={selected ? 1.08 : 1}>
+      <mesh ref={ref} castShadow receiveShadow onClick={(e) => { e.stopPropagation(); onClick(id); }}>
         <boxGeometry args={[2.5, 0.75, 1.6]} />
         <meshStandardMaterial color={color} transparent opacity={opacity} metalness={0.65} roughness={0.28} emissive={selected ? color : "#000"} emissiveIntensity={selected ? 0.65 : 0} />
       </mesh>
-      {selected && <mesh scale={1.12}><boxGeometry args={[2.5, 0.75, 1.6]} /><meshBasicMaterial color={color} transparent opacity={0.12} wireframe /></mesh>}
+      {selected && <mesh><boxGeometry args={[2.5, 0.75, 1.6]} /><meshBasicMaterial color={color} transparent opacity={0.2} wireframe /></mesh>}
       <Html position={[0, 0.62, 0]} center distanceFactor={8}>
         <div className={`three-label ${selected ? "active" : ""}`} style={{ borderColor: color }}>{label}</div>
       </Html>

@@ -14,5 +14,5 @@ export default function LessonDetail() {
 
   function finish() { completeLesson(lesson.id); setDone(true); }
 
-  return <main className="page lesson-detail"><Link className="back-link" to="/en/lessons">← Lessons</Link><div className="page-heading"><span>{lesson.category}</span><h1>{lesson.title}</h1><p>{lesson.summary}</p></div><LessonProgress value={done ? 100 : 30}/><LessonContent sections={lesson.sections}/><button className="lesson-button complete-button" onClick={finish}>{done ? "Lesson completed ✓" : "Mark lesson complete"}</button><LessonNavigation nextId={lessons[lessons.findIndex((x) => x.id === lesson.id) + 1]?.id}/></main>;
+  return <main className="page lesson-detail"><Link className="back-link" to="/en/lessons">← Lessons</Link><div className="page-heading"><span>{lesson.category}</span><h1>{lesson.title}</h1><p>{lesson.summary}</p></div><LessonProgress value={done ? 100 : 0}/><LessonContent sections={lesson.sections}/><button className="lesson-button complete-button" onClick={finish}>{done ? "Lesson completed ✓" : "Mark lesson complete"}</button><LessonNavigation nextId={lessons[lessons.findIndex((x) => x.id === lesson.id) + 1]?.id}/></main>;
 }

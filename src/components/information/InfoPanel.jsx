@@ -2,9 +2,11 @@ import { getComponent } from "../../data/architectureData.js";
 import KeyFacts from "./KeyFacts.jsx";
 import ImportanceCard from "./ImportanceCard.jsx";
 import ActionButtons from "./ActionButtons.jsx";
+import useArchitecture from "../../hooks/useArchitecture.js";
 
 export default function InfoPanel({ selected, onAnimate }) {
   const item = getComponent(selected);
+  const { t } = useArchitecture();
 
   return (
     <aside className="info-panel">
@@ -13,7 +15,7 @@ export default function InfoPanel({ selected, onAnimate }) {
       <div className="tagline">{item.tagline}</div>
       <p className="description">{item.description}</p>
       <div className="separator" />
-      <h3 className="facts-title">KEY FACTS</h3>
+      <h3 className="facts-title">{t.keyFacts}</h3>
       <KeyFacts facts={item.facts} />
       <ImportanceCard text={item.importance} />
       <ActionButtons onAnimate={onAnimate} />

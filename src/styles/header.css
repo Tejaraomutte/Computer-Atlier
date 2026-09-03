@@ -12,6 +12,10 @@
 .header-search input { width:100%; border:0; outline:0; background:transparent; color:white; }
 .header-search input::placeholder { color:#68748a; }
 .language-selector { display:flex; align-items:center; gap:6px; padding:9px 11px; border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.025); color:#c2cad8; }
+.language-menu { position:relative; }
+.language-options { position:absolute; right:0; top:calc(100% + 8px); min-width:120px; padding:5px; border:1px solid var(--line); border-radius:10px; background:#0d1423; box-shadow:0 15px 35px rgba(0,0,0,.35); }
+.language-options button { width:100%; padding:8px 10px; border:0; border-radius:7px; color:#aeb8c9; background:transparent; text-align:left; font-size:12px; }
+.language-options button:hover, .language-options button.active { color:#fff; background:rgba(139,92,246,.2); }
 .profile-button { width:38px; height:38px; display:grid; place-items:center; border-radius:50%; border:1px solid #f97316; background:rgba(249,115,22,.13); font-weight:800; font-size:12px; }
 .simple-sidebar { display:flex; gap:10px; padding:20px 30px; }
 .simple-sidebar a { padding:8px 12px; border-radius:9px; color:var(--muted); }

@@ -3,7 +3,9 @@ import {
   Search, Globe, ChevronDown
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
 import useArchitecture from "../../hooks/useArchitecture.js";
+import { languages } from "../../data/i18n.js";
 
 const links = [
   ["/en/explore", "Explore", Compass],
@@ -14,7 +16,8 @@ const links = [
 ];
 
 export default function Header() {
-  const { search, setSearch } = useArchitecture();
+  const { search, setSearch, language, setLanguage, t } = useArchitecture();
+  const [languageOpen, setLanguageOpen] = useState(false);
 
   return (
     <header className="header">
@@ -28,7 +31,7 @@ export default function Header() {
             className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}
           >
             <Icon size={16} />
-            {label}
+            {t[label.toLowerCase()] || label}
           </NavLink>
         ))}
       </nav>
@@ -38,11 +41,14 @@ export default function Header() {
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search components, topics..."
+          placeholder={t.search}
         />
       </label>
 
-      <button className="language-selector"><Globe size={15} /> English <ChevronDown size={14} /></button>
+      <div className="language-menu">
+        <button className="language-selector" onClick={() => setLanguageOpen((value) => !value)} aria-expanded={languageOpen}><Globe size={15} /> {languages.find((item) => item.code === language)?.name} <ChevronDown size={14} /></button>
+        {languageOpen && <div className="language-options" role="menu">{languages.map((option) => <button key={option.code} type="button" role="menuitem" className={language === option.code ? "active" : ""} onClick={() => { setLanguage(option.code); setLanguageOpen(false); }}>{option.name}</button>)}</div>}
+      </div>
       <div className="profile-button">CA</div>
     </header>
   );

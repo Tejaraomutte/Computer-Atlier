@@ -5,22 +5,20 @@ import ViewerTip from "./ViewerTip.jsx";
 import Hotspot from "./Hotspot.jsx";
 import { getComponent } from "../../data/architectureData.js";
 import useViewer from "../../hooks/useViewer.js";
+import useArchitecture from "../../hooks/useArchitecture.js";
 
 export default function ArchitectureViewer({ selected, onSelect }) {
   const controlsRef = useRef();
+  const { t } = useArchitecture();
   const { isolated, setIsolated, dataFlow, setDataFlow, layers, setLayers } = useViewer();
   const [layersOpen, setLayersOpen] = useState(false);
   const [viewMode, setViewMode] = useState("3d");
   const [selectedPart, setSelectedPart] = useState(null);
-  const [selectedView, setSelectedView] = useState("overview");
   const item = getComponent(selected);
   const activePart = item.media.parts.find((part) => part.id === selectedPart);
-  const activeView = item.media.views.find((view) => view.id === selectedView) || item.media.views[0];
 
   useEffect(() => {
     setSelectedPart(null);
-    setSelectedView("overview");
-    setViewMode("3d");
   }, [selected]);
 
   function reset() {
@@ -61,16 +59,13 @@ export default function ArchitectureViewer({ selected, onSelect }) {
       <ViewerTip />
       <div className="canvas-container">
         {viewMode === "3d" ? <ArchitectureScene selected={selected} onSelect={onSelect} isolated={isolated} layers={layers} dataFlow={dataFlow} controlsRef={controlsRef} /> : (
-          <section className="image-viewer" aria-label={`${item.name} image viewer`}>
-            <div className="image-viewer-heading"><span>COMPONENT VIEW</span><strong>{activePart?.name || item.name}</strong></div>
-            <div className="image-view-selector" role="group" aria-label="Component image view">
-              {item.media.views.map((view) => <button key={view.id} type="button" className={selectedView === view.id ? "active" : ""} onClick={() => { setSelectedView(view.id); setSelectedPart(null); }}>{view.label}</button>)}
-            </div>
+          <section className="image-viewer" aria-label={`${item.name} architecture image viewer`}>
+            <div className="image-viewer-heading"><span>{t.componentView}</span><strong>{activePart?.name || item.name}</strong></div>
             <div className="component-image-wrap">
-              <img src={activePart?.image || activeView.image} alt={activePart?.name || `${item.name} ${activeView.label.toLowerCase()}`} />
+              <img src={activePart?.image || item.media.overview} alt={activePart?.name || `${item.name} architecture`} />
               {item.media.parts.map((part) => <Hotspot key={part.id} position={part.position} label={part.name} color={item.color} onClick={() => setSelectedPart(part.id)} />)}
             </div>
-            <div className="image-viewer-caption">{activePart ? <button type="button" onClick={() => setSelectedPart(null)}>Back to overview</button> : "Select a dot to inspect a part"}</div>
+            <div className="image-viewer-caption">{activePart ? <button type="button" onClick={() => setSelectedPart(null)}>{t.backOverview}</button> : t.pointMarker}</div>
           </section>
         )}
       </div>
@@ -78,7 +73,7 @@ export default function ArchitectureViewer({ selected, onSelect }) {
         <button type="button" className={viewMode === "3d" ? "active" : ""} onClick={() => setViewMode("3d")}>3D scene</button>
         <button type="button" className={viewMode === "image" ? "active" : ""} onClick={() => setViewMode("image")}>Image view</button>
       </div>
-      <div className="viewer-footer">3D ARCHITECTURE · DRAG TO ROTATE · SCROLL TO ZOOM · CLICK TO EXPLORE</div>
+      <div className="viewer-footer">{t.threeFooter}</div>
     </main>
   );
 }
