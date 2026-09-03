@@ -1,0 +1,11 @@
+:root {
+  --bg: #070912;
+  --panel: #0d1423;
+  --panel-2: #111a2c;
+  --line: rgba(255,255,255,.09);
+  --text: #f7f8fc;
+  --muted: #8d98ab;
+  --purple: #8b5cf6;
+  --cyan: #22d3ee;
+  --radius: 20px;
+}

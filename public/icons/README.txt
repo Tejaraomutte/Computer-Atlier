@@ -1,0 +1,1 @@
+Place optional custom SVG/PNG icons in this folder. The current UI uses lucide-react icons.
