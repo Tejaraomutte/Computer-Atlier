@@ -16,16 +16,6 @@ npm install
 npm run dev
 ```
 
-Then open:
-
-http://localhost:3000/en
-
-## Main interactive viewer
-
-Open:
-
-http://localhost:3000/en/explore
-
 The viewer supports:
 - mouse drag = rotate
 - mouse wheel = zoom
