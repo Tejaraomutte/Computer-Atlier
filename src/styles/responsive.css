@@ -7,7 +7,13 @@
 @media (max-width:900px) {
   .header { padding:0 15px; }
   .main-nav { display:none; }
-  .header-search { margin-left:auto; }
+  .info-panel h1 { font-size:32px; }
+  .system-output-page { width:calc(100% - 28px); padding-top:30px; }
+  .system-diagram { min-height:430px; padding:20px 14px; }
+  .system-flow { justify-content:flex-start; gap:8px; overflow-x:auto; padding:20px 4px; }
+  .system-flow-node { min-width:112px; min-height:84px; padding:12px; }
+  .system-flow-node strong { font-size:12px; }
+  .system-flow-arrow { font-size:20px; }
   .explorer-layout { width:calc(100% - 24px); display:flex; flex-direction:column; }
   .library-panel { height:auto; min-height:auto; max-height:none; overflow:visible; }
   .component-list { display:grid; grid-template-columns:repeat(2,1fr); }
@@ -32,4 +38,6 @@
   .info-panel h1 { font-size:32px; }
   .stage-list { flex-direction:column; }
   .sim-inputs { grid-template-columns:1fr; }
+  .beginner-guide { padding:20px 16px; }
+  .term-grid { grid-template-columns:1fr; }
 }

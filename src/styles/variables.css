@@ -1,10 +1,10 @@
 :root {
-  --bg: #070912;
-  --panel: #0d1423;
-  --panel-2: #111a2c;
-  --line: rgba(255,255,255,.09);
-  --text: #f7f8fc;
-  --muted: #8d98ab;
+  --bg: #edf3f7;
+  --panel: #ffffff;
+  --panel-2: #f4f8fa;
+  --line: rgba(39, 61, 78, .14);
+  --text: #203243;
+  --muted: #647789;
   --purple: #8b5cf6;
   --cyan: #22d3ee;
   --radius: 20px;

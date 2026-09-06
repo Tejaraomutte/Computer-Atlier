@@ -17,7 +17,7 @@ function SystemModel() {
     ["storage", [6.5, -4.2, 0]], ["io-controller", [-6.5, -4.2, 0]], ["network", [10, 3.2, 0]], ["psu", [-10, 3.2, 0]]
   ];
   return <group position={[0, -1, 0]} scale={0.27}>
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -4.8, -1.5]} receiveShadow><boxGeometry args={[23, 15, 0.18]} /><meshStandardMaterial color="#111827" roughness={0.7} metalness={0.25} /></mesh>
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -4.8, -1.5]} receiveShadow><boxGeometry args={[23, 15, 0.18]} /><meshStandardMaterial color="#d8e4e8" roughness={0.7} metalness={0.25} /></mesh>
     {parts.map(([id, position]) => <group key={id} position={position}><ComponentModel component={byId(id)} labelPosition={[0, -1.35, 0]} /></group>)}
     <SystemBus />
     <Connection start={[0, 2.8, 0]} end={[0, 1.4, 0]} active />

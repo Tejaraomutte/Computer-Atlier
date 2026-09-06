@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useParams } from "react-router-dom";
 import { ArchitectureProvider } from "./context/ArchitectureContext.jsx";
 import { ViewerProvider } from "./context/ViewerContext.jsx";
 import { LearningProvider } from "./context/LearningContext.jsx";
@@ -14,6 +14,14 @@ import Notes from "./pages/Notes.jsx";
 import QuizPage from "./pages/QuizPage.jsx";
 import SimulationPage from "./pages/SimulationPage.jsx";
 import ComparisonPage from "./pages/ComparisonPage.jsx";
+import SystemOutput from "./components/systems/SystemOutput.jsx";
+import { systemData } from "./data/architectureData.js";
+
+function SystemOutputRoute() {
+  const { systemId } = useParams();
+  const system = systemData.find((item) => item.id === systemId) || systemData[0];
+  return <SystemOutput system={system} />;
+}
 
 export default function App() {
   return (
@@ -26,6 +34,7 @@ export default function App() {
               <Route path="/en" element={<Home />} />
               <Route path="/en/explore" element={<Explorer />} />
               <Route path="/en/systems" element={<Systems />} />
+              <Route path="/en/system-output/:systemId" element={<SystemOutputRoute />} />
               <Route path="/en/lessons" element={<Lessons />} />
               <Route path="/en/lessons/:lessonId" element={<LessonDetail />} />
               <Route path="/en/library" element={<Library />} />

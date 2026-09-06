@@ -3,6 +3,7 @@ import ArchitectureScene from "../../three/scene/ArchitectureScene.jsx";
 import ControlToolbar from "./ControlToolbar.jsx";
 import ViewerTip from "./ViewerTip.jsx";
 import Hotspot from "./Hotspot.jsx";
+import StructuralDiagram from "./StructuralDiagram.jsx";
 import { getComponent } from "../../data/architectureData.js";
 import useViewer from "../../hooks/useViewer.js";
 import useArchitecture from "../../hooks/useArchitecture.js";
@@ -62,7 +63,7 @@ export default function ArchitectureViewer({ selected, onSelect }) {
           <section className="image-viewer" aria-label={`${item.name} architecture image viewer`}>
             <div className="image-viewer-heading"><span>{t.componentView}</span><strong>{activePart?.name || item.name}</strong></div>
             <div className="component-image-wrap">
-              <img src={activePart?.image || item.media.overview} alt={activePart?.name || `${item.name} architecture`} />
+              <StructuralDiagram component={item} parts={item.media.parts} />
               {item.media.parts.map((part) => <Hotspot key={part.id} position={part.position} label={part.name} color={item.color} onClick={() => setSelectedPart(part.id)} />)}
             </div>
             <div className="image-viewer-caption">{activePart ? <button type="button" onClick={() => setSelectedPart(null)}>{t.backOverview}</button> : t.pointMarker}</div>
