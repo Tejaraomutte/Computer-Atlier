@@ -10,10 +10,12 @@ import useArchitecture from "../../hooks/useArchitecture.js";
 
 export default function ArchitectureViewer({ selected, onSelect }) {
   const controlsRef = useRef();
+  const viewerRef = useRef(null);
   const { t } = useArchitecture();
   const { isolated, setIsolated, dataFlow, setDataFlow, layers, setLayers } = useViewer();
   const [layersOpen, setLayersOpen] = useState(false);
-  const [viewMode, setViewMode] = useState("3d");
+  const [viewMode, setViewMode] = useState("description");
+  const [systemViewMode, setSystemViewMode] = useState("description");
   const [selectedPart, setSelectedPart] = useState(null);
   const item = getComponent(selected);
   const activePart = item.media.parts.find((part) => part.id === selectedPart);
@@ -37,29 +39,78 @@ export default function ArchitectureViewer({ selected, onSelect }) {
     if (c?.object) c.object.position.multiplyScalar(0.88);
   }
 
+  const componentImageOptions = {
+    "system-architecture": ["/images/motherboard.png"],
+    cpu: ["/images/cpu.png"],
+    control: ["/images/cu.png"],
+    registers: ["/images/registers.png"],
+    alu: ["/images/alu.png"],
+    cache: ["/images/cache.png"],
+    bus: ["/images/systembus.png"],
+    memory: ["/images/ram.png"],
+    gpu: ["/images/gpu.png"],
+    motherboard: ["/images/motherboard.png"],
+    storage: ["/images/ssd.png"],
+    psu: ["/images/psu.png"],
+    "io-controller": ["/images/inputoutput.png"],
+    network: ["/images/nic.png"],
+    mmu: ["/images/mmu.png"],
+    dma: ["/images/dma.png"],
+    clock: ["/images/systemclock.png"],
+    firmware: ["/images/firmware.png"],
+    cooling: ["/images/cooling.png"]
+  };
+
+  const selectedImage = componentImageOptions[selected]?.[0] || "/images/cpu.png";
+  const isSystemArchitecture = selected === "system-architecture";
+  const isCpuImageScene = !isSystemArchitecture && Boolean(componentImageOptions[selected]);
+  const stageTitle = item?.name || "CPU";
+  const stageSubtitle = item?.tagline || item?.description || "Complete architecture information";
+  const showSystemDescription = isSystemArchitecture && systemViewMode === "description";
+  const showSystemImageView = isSystemArchitecture && systemViewMode === "image";
+
   return (
     <main className="viewer-panel">
-      <ControlToolbar
-        onReset={reset}
-        onIsolate={isolate}
-        onLayers={() => setLayersOpen((v) => !v)}
-        onFlow={() => setDataFlow((v) => !v)}
-        onZoom={zoomIn}
-      />
-      {layersOpen && (
-        <div className="layers-popup">
-          <h4>ARCHITECTURE LAYERS</h4>
-          {Object.entries(layers).map(([key, value]) => (
-            <label className="layer-option" key={key}>
-              <input type="checkbox" checked={value} onChange={() => setLayers((prev) => ({...prev, [key]: !prev[key]}))}/>
-              {key[0].toUpperCase() + key.slice(1)}
-            </label>
-          ))}
+      {isCpuImageScene && (
+        <div className="viewer-asset-header">
+          <span className="viewer-asset-kicker">COMPLETE INFORMATION</span>
+          <h2>{stageTitle}</h2>
+          <p>{stageSubtitle}</p>
         </div>
       )}
-      <ViewerTip />
       <div className="canvas-container">
-        {viewMode === "3d" ? <ArchitectureScene selected={selected} onSelect={onSelect} isolated={isolated} layers={layers} dataFlow={dataFlow} controlsRef={controlsRef} /> : (
+        {isSystemArchitecture ? (
+          showSystemDescription ? (
+            <ArchitectureScene selected={selected} onSelect={onSelect} isolated={isolated} layers={layers} dataFlow={dataFlow} controlsRef={controlsRef} />
+          ) : (
+            <section className="image-viewer" aria-label={`${item.name} architecture image viewer`}>
+              <div className="image-viewer-heading"><span>{t.componentView}</span><strong>{activePart?.name || item.name}</strong></div>
+              <div className="component-image-wrap">
+                <StructuralDiagram component={item} parts={item.media.parts} />
+                {item.media.parts.map((part) => <Hotspot key={part.id} position={part.position} label={part.name} color={item.color} onClick={() => setSelectedPart(part.id)} />)}
+              </div>
+              <div className="image-viewer-caption">{activePart ? <button type="button" onClick={() => setSelectedPart(null)}>{t.backOverview}</button> : t.pointMarker}</div>
+            </section>
+          )
+        ) : viewMode === "description" ? (
+          isCpuImageScene ? (
+            <div ref={viewerRef} className="cpu-static-scene">
+              <img
+                src={selectedImage}
+                alt={`${selected} architecture illustration`}
+                draggable="false"
+                onError={(event) => {
+                  if (!event.target.dataset.fallbackApplied) {
+                    event.target.dataset.fallbackApplied = "true";
+                    event.target.src = "/images/cpu.png";
+                  }
+                }}
+              />
+            </div>
+          ) : (
+            <ArchitectureScene selected={selected} onSelect={onSelect} isolated={isolated} layers={layers} dataFlow={dataFlow} controlsRef={controlsRef} />
+          )
+        ) : (
           <section className="image-viewer" aria-label={`${item.name} architecture image viewer`}>
             <div className="image-viewer-heading"><span>{t.componentView}</span><strong>{activePart?.name || item.name}</strong></div>
             <div className="component-image-wrap">
@@ -70,11 +121,18 @@ export default function ArchitectureViewer({ selected, onSelect }) {
           </section>
         )}
       </div>
-      <div className="viewer-mode-switch" role="group" aria-label="Viewer mode">
-        <button type="button" className={viewMode === "3d" ? "active" : ""} onClick={() => setViewMode("3d")}>3D scene</button>
-        <button type="button" className={viewMode === "image" ? "active" : ""} onClick={() => setViewMode("image")}>Image view</button>
-      </div>
-      <div className="viewer-footer">{t.threeFooter}</div>
+      {isSystemArchitecture ? (
+        <div className="viewer-mode-switch" role="group" aria-label="System architecture view mode">
+          <button type="button" className={showSystemDescription ? "active" : ""} onClick={() => setSystemViewMode("description")}>Description</button>
+          <button type="button" className={showSystemImageView ? "active" : ""} onClick={() => setSystemViewMode("image")}>Image view</button>
+        </div>
+      ) : !isCpuImageScene && (
+        <div className="viewer-mode-switch" role="group" aria-label="Viewer mode">
+          <button type="button" className={viewMode === "description" ? "active" : ""} onClick={() => setViewMode("description")}>Description</button>
+          <button type="button" className={viewMode === "image" ? "active" : ""} onClick={() => setViewMode("image")}>Image view</button>
+        </div>
+      )}
+      {!isCpuImageScene && <div className="viewer-footer">{t.threeFooter}</div>}
     </main>
   );
 }

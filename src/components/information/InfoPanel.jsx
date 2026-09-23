@@ -4,7 +4,7 @@ import ImportanceCard from "./ImportanceCard.jsx";
 import ActionButtons from "./ActionButtons.jsx";
 import useArchitecture from "../../hooks/useArchitecture.js";
 
-export default function InfoPanel({ selected, onAnimate }) {
+export default function InfoPanel({ selected }) {
   const item = getComponent(selected);
   const { t } = useArchitecture();
 
@@ -18,7 +18,7 @@ export default function InfoPanel({ selected, onAnimate }) {
       <h3 className="facts-title">{t.keyFacts}</h3>
       <KeyFacts facts={item.facts} />
       <ImportanceCard text={item.importance} />
-      <ActionButtons onAnimate={onAnimate} />
+      <ActionButtons />
     </aside>
   );
 }

@@ -1,6 +1,6 @@
 import {
-  Compass, Cpu, BookOpen, Library as LibraryIcon, NotebookPen,
-  Search, Globe, ChevronDown
+  Compass, BookOpen, NotebookPen,
+  Search, Globe, ChevronDown, Building2
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
@@ -9,9 +9,8 @@ import { languages } from "../../data/i18n.js";
 
 const links = [
   ["/en/explore", "Explore", Compass],
-  ["/en/systems", "Systems", Cpu],
+  ["/en/architecture", "Architecture", Building2],
   ["/en/lessons", "Lessons", BookOpen],
-  ["/en/library", "Library", LibraryIcon],
   ["/en/notes", "Notes", NotebookPen]
 ];
 

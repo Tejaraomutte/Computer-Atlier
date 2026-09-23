@@ -1,13 +1,21 @@
+import { useEffect } from "react";
 import useQuiz from "../../hooks/useQuiz.js";
 import Question from "./Question.jsx";
 import QuizResult from "./QuizResult.jsx";
 import ProgressBar from "./ProgressBar.jsx";
 
-export default function Quiz({ questions, componentName }) {
+export default function Quiz({ questions, componentName, onComplete }) {
   const quiz = useQuiz(questions);
   const selected = quiz.answers[quiz.current.id];
+  const completed = quiz.finished && selected;
 
-  if (quiz.finished && selected) {
+  useEffect(() => {
+    if (completed && onComplete) {
+      onComplete(quiz.score, questions.length);
+    }
+  }, [completed, onComplete, quiz.score, questions.length]);
+
+  if (completed) {
     return <QuizResult score={quiz.score} total={questions.length} onRetry={quiz.reset} />;
   }
 

@@ -4,6 +4,20 @@ const LearningContext = createContext(null);
 
 export function LearningProvider({ children }) {
   const [completedLessons, setCompletedLessons] = useState([]);
+  const [lessonProgress, setLessonProgress] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("ca-lesson-progress") || "{}");
+    } catch {
+      return {};
+    }
+  });
+  const [quizScores, setQuizScores] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem("ca-quiz-scores") || "{}");
+    } catch {
+      return {};
+    }
+  });
   const [notes, setNotes] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("ca-notes") || "[]");
@@ -14,6 +28,22 @@ export function LearningProvider({ children }) {
 
   function completeLesson(id) {
     setCompletedLessons((items) => items.includes(id) ? items : [...items, id]);
+  }
+
+  function updateLessonProgress(id, progress, score) {
+    setLessonProgress((current) => {
+      const next = { ...current, [id]: progress };
+      localStorage.setItem("ca-lesson-progress", JSON.stringify(next));
+      return next;
+    });
+
+    if (typeof score === "number") {
+      setQuizScores((current) => {
+        const next = { ...current, [id]: score };
+        localStorage.setItem("ca-quiz-scores", JSON.stringify(next));
+        return next;
+      });
+    }
   }
 
   function addNote(note) {
@@ -29,8 +59,8 @@ export function LearningProvider({ children }) {
   }
 
   const value = useMemo(
-    () => ({ completedLessons, completeLesson, notes, addNote, removeNote }),
-    [completedLessons, notes]
+    () => ({ completedLessons, completeLesson, lessonProgress, updateLessonProgress, quizScores, notes, addNote, removeNote }),
+    [completedLessons, lessonProgress, quizScores, notes]
   );
 
   return <LearningContext.Provider value={value}>{children}</LearningContext.Provider>;

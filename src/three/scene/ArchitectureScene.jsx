@@ -35,7 +35,7 @@ function World({ selected, controlsRef }) {
     <Lighting />
     <SceneEnvironment />
     {component.id === "system-architecture" ? <SystemModel /> : <Center><ComponentModel component={component} /></Center>}
-    <OrbitController controlsRef={controlsRef} />
+    <OrbitController controlsRef={controlsRef} enableRotate={selected === "system-architecture"} />
   </>;
 }
 

@@ -16,10 +16,6 @@ export default function Home() {
         <SystemCard title="Memory Hierarchy" description="Understand cache, RAM and the relationship between speed and capacity."/>
         <SystemCard title="Instruction Execution" description="Follow an instruction from Fetch through Write Back."/>
       </section>
-      <section className="home-feature">
-        <div><span className="hero-kicker">THE ATELIER EXPERIENCE</span><h2>Click. Rotate. Zoom. Learn.</h2><p>The center of the application is a real-time 3D viewer. Select a component and the learning panel updates instantly.</p></div>
-        <div className="home-feature-icon"><Cpu size={70}/><Layers3 size={45}/><Play size={38}/></div>
-      </section>
     </main>
   );
 }
