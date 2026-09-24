@@ -1,3 +1,5 @@
+import { getLocalizedComponent } from "./i18n.js";
+
 export const architectureComponents = [
   {
     id: "system-architecture",
@@ -298,44 +300,201 @@ export const architectureComponents = [
 ];
 
 const componentMedia = {
+  "system-architecture": {
+    overview: "/images/motherboard.png",
+    parts: [
+      { id: "cpu", name: "Central Processing Unit (CPU)", role: "Primary Computation & Execution", functioning: "Fetches, decodes, and executes program instructions, managing arithmetic computations and coordinating data flow across all system buses.", signal: "CLK / INSTR / ADDR / DATA", image: "/images/cpu.png" },
+      { id: "memory", name: "Main Memory (RAM)", role: "Primary Working Memory", functioning: "Stores currently running operating system processes, application code, and runtime memory buffers for rapid random access by the processor.", signal: "DDR5 / 64-BIT BUS", image: "/images/ram.png" },
+      { id: "bus", name: "System Interconnect Bus", role: "High-Speed Data Highway", functioning: "Transfers bidirectional data, target addresses, and coordination control signals between the CPU, memory subsystem, and high-speed peripherals.", signal: "PCIe / DMI / CONTROL", image: "/images/systembus.png" },
+      { id: "gpu", name: "Graphics Processing Unit (GPU)", role: "Parallel Acceleration Engine", functioning: "Accelerates matrix computations, 3D graphics rendering, and machine learning pipelines across thousands of SIMD shader cores.", signal: "PCIe x16 / DISPLAY BUS", image: "/images/gpu.png" },
+      { id: "storage", name: "Storage Subsystem (NVMe/SSD)", role: "Persistent Non-Volatile Storage", functioning: "Permanently retains OS files, installed applications, and user data across system shutdowns using high-speed multi-channel NAND flash.", signal: "NVMe 4.0 / PCIe x4", image: "/images/ssd.png" },
+      { id: "io-controller", name: "I/O & Peripheral Controller", role: "Device Arbitration & Bridging", functioning: "Manages communication protocols and hardware interrupts for USB devices, network interfaces, audio codecs, and storage controllers.", signal: "IRQ / USB / SATA", image: "/images/inputoutput.png" }
+    ]
+  },
   cpu: {
     overview: "/images/cpu.png",
     parts: [
-      ["control-unit", "Control Unit", "/images/cpu.png", 27],
-      ["registers", "Registers", "/images/cpu.png", 39],
-      ["alu", "Arithmetic Logic Unit", "/images/cpu.png", 52],
-      ["cache", "Cache", "/images/cache.png", 66],
-      ["memory-interface", "Memory Interface", "/images/cpu.png", 78]
+      { id: "control-unit", name: "Control Unit (CU)", role: "Instruction Flow & Sequencing", functioning: "Retrieves instructions from cache/memory, decodes their opcode bit patterns, and directs data movement across the execution pipeline.", signal: "MICRO_OP / DECODE", image: "/images/cu.png" },
+      { id: "registers", name: "Register File", role: "Single-Cycle Internal Storage", functioning: "Ultra-fast on-die flip-flop memory cells holding instruction pointers (PC), memory addresses (MAR), and active arithmetic operands.", signal: "REG_READ / REG_WRITE", image: "/images/registers.png" },
+      { id: "alu", name: "Arithmetic Logic Unit (ALU)", role: "Mathematical & Boolean Computation", functioning: "Executes fundamental binary arithmetic (addition, subtraction, multiplication) and logical operations (AND, OR, XOR, shifts) on operand words.", signal: "ALU_RESULT / FLAGS", image: "/images/alu.png" },
+      { id: "cache", name: "L1 / L2 Cache Memory", role: "Low-Latency Data & Instruction Buffer", functioning: "Maintains high-speed local copies of frequently referenced memory blocks to avoid costly off-chip DRAM latency penalties.", signal: "TAG_MATCH / HIT_MISS", image: "/images/cache.png" },
+      { id: "bus-interface", name: "Bus Interface Unit (BIU)", role: "External Bus Transaction Controller", functioning: "Drives physical address lines and coordinates memory read/write requests and DMA arbitration with the motherboard chipset.", signal: "MEM_RD / MEM_WR / READY", image: "/images/cpu.png" }
     ]
   },
-  control: { overview: "/images/cpu.png", parts: [["instruction-decoder", "Instruction Decoder", "/images/cpu.png", 39], ["control-logic", "Control Logic", "/images/cpu.png", 57], ["clock", "Clock Signal", "/images/cpu.png", 75]] },
-  registers: { overview: "/images/cpu.png", parts: [["program-counter", "Program Counter", "/images/cpu.png", 30], ["instruction-register", "Instruction Register", "/images/cpu.png", 54], ["data-register", "Data Register", "/images/cpu.png", 78]] },
-  alu: { overview: "/images/architecture.png", parts: [["arithmetic-circuit", "Arithmetic Circuit", "/images/architecture.png", 35], ["logic-circuit", "Logic Circuit", "/images/architecture.png", 58], ["status-flags", "Status Flags", "/images/architecture.png", 76]] },
-  cache: { overview: "/images/cache.png", parts: [["cache-lines", "Cache Lines", "/images/cache.png", 30], ["tag-store", "Tag Store", "/images/cache.png", 54], ["cache-controller", "Cache Controller", "/images/cache.png", 78]] },
-  bus: { overview: "/images/architecture.png", parts: [["data-lines", "Data Lines", "/images/architecture.png", 30], ["address-lines", "Address Lines", "/images/architecture.png", 54], ["control-lines", "Control Lines", "/images/architecture.png", 78]] },
-  memory: { overview: "/images/memory.png", parts: [["memory-cells", "Memory Cells", "/images/memory.png", 30], ["row-decoder", "Row Decoder", "/images/memory.png", 54], ["column-decoder", "Column Decoder", "/images/memory.png", 78]] },
-  gpu: { overview: "/images/architecture.png", parts: [["shader-cores", "Shader Cores", "/images/architecture.png", 30], ["vram", "VRAM", "/images/memory.png", 54], ["display-engine", "Display Engine", "/images/architecture.png", 78]] },
-  motherboard: { overview: "/images/architecture.png", parts: [["cpu-socket", "CPU Socket", "/images/architecture.png", 30], ["expansion-slots", "Expansion Slots", "/images/architecture.png", 54], ["chipset", "Chipset", "/images/architecture.png", 78]] },
-  storage: { overview: "/images/memory.png", parts: [["nand-flash", "NAND Flash", "/images/memory.png", 30], ["controller", "Storage Controller", "/images/memory.png", 54], ["interface", "NVMe Interface", "/images/memory.png", 78]] },
-  psu: { overview: "/images/architecture.png", parts: [["transformer", "Transformer", "/images/architecture.png", 30], ["regulator", "Voltage Regulator", "/images/architecture.png", 54], ["connectors", "Power Connectors", "/images/architecture.png", 78]] },
-  "io-controller": { overview: "/images/architecture.png", parts: [["usb-controller", "USB Controller", "/images/architecture.png", 30], ["device-queue", "Device Queue", "/images/architecture.png", 54], ["interrupt-logic", "Interrupt Logic", "/images/architecture.png", 78]] },
-  network: { overview: "/images/architecture.png", parts: [["mac-unit", "MAC Unit", "/images/architecture.png", 30], ["packet-buffer", "Packet Buffer", "/images/memory.png", 54], ["physical-layer", "Physical Layer", "/images/architecture.png", 78]] },
-  mmu: { overview: "/images/memory.png", parts: [["page-table", "Page Table", "/images/memory.png", 30], ["tlb", "Translation Lookaside Buffer", "/images/memory.png", 54], ["protection-check", "Protection Check", "/images/memory.png", 78]] },
-  dma: { overview: "/images/architecture.png", parts: [["dma-channel", "DMA Channel", "/images/architecture.png", 30], ["transfer-engine", "Transfer Engine", "/images/architecture.png", 54], ["status-register", "Status Register", "/images/architecture.png", 78]] },
-  clock: { overview: "/images/cpu.png", parts: [["oscillator", "Oscillator", "/images/cpu.png", 30], ["clock-distribution", "Clock Distribution", "/images/cpu.png", 54], ["phase-lock", "Phase-Locked Loop", "/images/cpu.png", 78]] },
-  firmware: { overview: "/images/architecture.png", parts: [["uefi-core", "UEFI Core", "/images/architecture.png", 30], ["hardware-check", "Hardware Check", "/images/architecture.png", 54], ["boot-loader", "Boot Loader", "/images/architecture.png", 78]] },
-  cooling: { overview: "/images/architecture.png", parts: [["heat-sink", "Heat Sink", "/images/architecture.png", 30], ["fan", "Cooling Fan", "/images/architecture.png", 54], ["thermal-sensor", "Thermal Sensor", "/images/architecture.png", 78]] }
+  control: {
+    overview: "/images/cu.png",
+    parts: [
+      { id: "instruction-decoder", name: "Instruction Decoder", role: "Binary Opcode Translation", functioning: "Splits fetched machine instructions into opcode, addressing modes, and operand registers, activating matching internal control lines.", signal: "OPCODE_BUS / EXEC_LINE", image: "/images/cu.png" },
+      { id: "sequencer", name: "State Machine & Timing Sequencer", role: "Clock Cycle Step Generation", functioning: "Steps the CPU through sequential T-states (Fetch, Decode, Execute, Memory, Writeback) synchronously with the processor clock pulse.", signal: "T_STATE_0..4 / CLK_SYNC", image: "/images/cu.png" },
+      { id: "microcode-engine", name: "Microcode ROM & Control Matrix", role: "Micro-Operation Generation", functioning: "Emits sequences of hardware micro-instructions that orchestrate multiplexers, ALU functions, and register transfer gates for complex opcodes.", signal: "UOP_DISPATCH / MICRO_PC", image: "/images/cu.png" },
+      { id: "branch-logic", name: "Branch & Condition Evaluation Unit", role: "Jump & Branch Target Computation", functioning: "Evaluates condition flags (Zero, Carry, Sign, Overflow) to calculate jump targets and branch decisions for Program Counter updates.", signal: "BRANCH_TAKEN / PC_LOAD", image: "/images/cu.png" }
+    ]
+  },
+  registers: {
+    overview: "/images/registers.png",
+    parts: [
+      { id: "program-counter", name: "Program Counter (PC)", role: "Instruction Pointer", functioning: "Holds the memory address of the next instruction to fetch; automatically increments each cycle unless overridden by jumps or interrupts.", signal: "ADDR_PTR / PC_INC", image: "/images/registers.png" },
+      { id: "instruction-register", name: "Instruction Register (IR)", role: "Current Opcode Latch", functioning: "Temporarily latches the raw instruction bytes retrieved from memory while the control unit decodes and coordinates execution.", signal: "DATA_IN / OPCODE_OUT", image: "/images/registers.png" },
+      { id: "mar", name: "Memory Address Register (MAR)", role: "Bus Address Buffer", functioning: "Latches and outputs target memory or I/O port addresses directly onto the external address bus for read and write operations.", signal: "ADDR_BUS_DRIVE", image: "/images/registers.png" },
+      { id: "mdr", name: "Memory Data Register (MDR)", role: "Bidirectional Data Latch", functioning: "Serves as a temporary holding buffer for data being transferred between the CPU's internal datapath and the external data bus.", signal: "DATA_LATCH / BUS_TRANS", image: "/images/registers.png" },
+      { id: "general-registers", name: "General Purpose Registers (GPR / ACC)", role: "Working Computation Scratchpad", functioning: "High-speed multi-port register array (R0-R15 / RAX-RDX) accessible in a single clock cycle for immediate ALU arithmetic and indexing.", signal: "SRC1 / SRC2 / DEST", image: "/images/registers.png" }
+    ]
+  },
+  alu: {
+    overview: "/images/alu.png",
+    parts: [
+      { id: "adder-subtractor", name: "Arithmetic Adder / Subtractor", role: "High-Speed Binary Math", functioning: "Performs binary addition and two's complement subtraction using fast carry-lookahead circuitry to minimize propagation delays.", signal: "ADD / SUB / CARRY_OUT", image: "/images/alu.png" },
+      { id: "logic-array", name: "Bitwise Logic Gate Matrix", role: "Boolean Logic Evaluation", functioning: "Applies parallel bitwise Boolean transformations (AND, OR, XOR, NOT, NAND) across multi-bit words for masking and comparisons.", signal: "LOGIC_OUT / BIT_MASK", image: "/images/alu.png" },
+      { id: "barrel-shifter", name: "Barrel Shifter & Rotator", role: "Multi-Bit Shift & Rotate", functioning: "Shifts or rotates data words left or right by arbitrary bit counts in a single clock cycle, accelerating multiplication, division, and bit packing.", signal: "LSL / LSR / ASR / ROR", image: "/images/alu.png" },
+      { id: "status-flags", name: "Status Flags Register (CCR)", role: "Arithmetic Condition Flags", functioning: "Latches condition flags (Zero Z, Carry C, Negative N, Overflow V) reflecting the outcome of the latest calculation for conditional jumps.", signal: "FLAG_Z / C / N / V", image: "/images/alu.png" }
+    ]
+  },
+  cache: {
+    overview: "/images/cache.png",
+    parts: [
+      { id: "cache-lines", name: "Data SRAM Line Arrays", role: "High-Density Fast Block Store", functioning: "Organized into associative sets of 64-byte cache lines built with multi-transistor SRAM cells to deliver multi-gigabyte/sec throughput.", signal: "LINE_DATA_64B", image: "/images/cache.png" },
+      { id: "tag-directory", name: "Tag Directory & Comparators", role: "Address Lookup & Match Logic", functioning: "Extracts upper address bits from incoming memory requests and compares them in parallel against cached tags to flag a hit or miss.", signal: "TAG_MATCH / HIT_MISS", image: "/images/cache.png" },
+      { id: "cache-controller", name: "Cache Controller & Replacement Logic", role: "Eviction & Write Policy Manager", functioning: "Enforces LRU (Least Recently Used) replacement algorithms, manages line eviction, and directs write-back and write-through operations.", signal: "EVICT_LINE / WRITE_BACK", image: "/images/cache.png" },
+      { id: "snoop-logic", name: "MESI Cache Coherency Unit", role: "Multi-Core Cache Synchronization", functioning: "Monitors interconnect bus transactions to maintain cache consistency across multiple processor cores using the MESI/MOESI protocol.", signal: "MESI_INVALIDATE / SNOOP", image: "/images/cache.png" }
+    ]
+  },
+  bus: {
+    overview: "/images/systembus.png",
+    parts: [
+      { id: "data-bus", name: "Bidirectional Data Bus Lines", role: "Operand & Instruction Carrier", functioning: "Parallel conductive traces that transport raw data bytes and machine instructions bidirectionally between the CPU, memory, and devices.", signal: "DATA[0..63] BIDIR", image: "/images/systembus.png" },
+      { id: "address-bus", name: "Unidirectional Address Bus Lines", role: "Target Location Identifier", functioning: "Carries memory and I/O register address bits from the active bus master to select specific hardware bytes or control ports.", signal: "ADDR[0..47] SELECT", image: "/images/systembus.png" },
+      { id: "control-bus", name: "Control & Timing Bus Lines", role: "Transaction Synchronization", functioning: "Transmits command and handshake pulses (Memory Read, Memory Write, I/O Read, I/O Write, Interrupts, Ready) across connected chips.", signal: "MEM_RD# / MEM_WR# / IO", image: "/images/systembus.png" },
+      { id: "bus-arbiter", name: "Bus Master Arbiter", role: "Access Contention Resolution", functioning: "Prioritizes and grants bus access among competing bus masters (CPU cores, GPU, DMA channels) to prevent bus collisions and starvation.", signal: "BUS_REQ# / BUS_GNT#", image: "/images/systembus.png" }
+    ]
+  },
+  memory: {
+    overview: "/images/ram.png",
+    parts: [
+      { id: "dram-cells", name: "DRAM Capacitor Storage Matrix", role: "High-Density Bit Cells", functioning: "Microscopic capacitors paired with single access transistors (1T-1C) that store individual electrical charges representing digital bits.", signal: "BITLINE / CHARGE_LEVEL", image: "/images/ram.png" },
+      { id: "row-decoder", name: "Row Address Decoder (RAS)", role: "Wordline Row Activation", functioning: "Decodes the row address received during RAS activation, turning on the corresponding wordline across memory columns.", signal: "RAS# / ROW_ACTIVATE", image: "/images/ram.png" },
+      { id: "column-decoder", name: "Column Address Decoder (CAS)", role: "Bitline Multiplexing", functioning: "Selects specific bitline column pairs from the opened row buffer, routing data words to the memory chip's output pins.", signal: "CAS# / COL_SELECT", image: "/images/ram.png" },
+      { id: "sense-amps", name: "Sense Amplifier Array", role: "Signal Detection & Cell Restoration", functioning: "Detects tiny micro-volt charges on bitlines when a cell is read, amplifies them to full CMOS logic levels, and restores cell charge.", signal: "SENSE_EN / RESTORE", image: "/images/ram.png" },
+      { id: "refresh-timer", name: "Automatic Refresh Controller", role: "Capacitor Charge Maintenance", functioning: "Periodically activates all DRAM rows every 64 milliseconds to prevent capacitor charge leakage from corrupting stored memory data.", signal: "AUTO_REFRESH_PULSE", image: "/images/ram.png" }
+    ]
+  },
+  gpu: {
+    overview: "/images/gpu.png",
+    parts: [
+      { id: "shader-cores", name: "Streaming Multiprocessors (SM)", role: "Massive SIMD Compute Array", functioning: "Massively parallel processing blocks containing FP32/INT32 execution units that calculate vertex transformations and pixel lighting in parallel.", signal: "WARP_EXEC / SIMD_PIPELINE", image: "/images/gpu.png" },
+      { id: "vram", name: "High-Speed Video RAM (GDDR6 / HBM)", role: "Dedicated Frame & Texture Buffer", functioning: "Ultra-wide memory channels delivering up to 1 TB/s bandwidth to feed textures, polygon geometry, and framebuffers to shader cores.", signal: "GDDR6_PHY / WIDE_BUS", image: "/images/gpu.png" },
+      { id: "rasterizer", name: "Geometry & Rasterization Engine", role: "Vector-to-Pixel Transformation", functioning: "Converts 3D polygon triangles into 2D screen fragments, performing depth (Z-buffer) testing, face culling, and pixel interpolation.", signal: "Z_TEST / FRAG_GEN", image: "/images/gpu.png" },
+      { id: "display-engine", name: "Display Output Controller", role: "Pixel Streaming & Protocol Output", functioning: "Scans active framebuffers out of VRAM, applies color correction, and serializes pixels into high-speed HDMI or DisplayPort streams.", signal: "DP_LANE[0..3] / HDMI_TMDS", image: "/images/gpu.png" }
+    ]
+  },
+  motherboard: {
+    overview: "/images/motherboard.png",
+    parts: [
+      { id: "cpu-socket", name: "CPU Socket & Power Grid", role: "Processor Physical Interconnect", functioning: "Provides thousands of gold-plated pins delivering multi-phase DC power, memory controller traces, and direct PCIe lanes to the CPU.", signal: "LGA_PINS / VCORE_RAILS", image: "/images/motherboard.png" },
+      { id: "chipset", name: "Chipset / Platform Controller Hub (PCH)", role: "Secondary Subsystem Router", functioning: "Bridges lower-speed SATA ports, audio codecs, USB controllers, and legacy buses to the processor via high-speed DMI links.", signal: "DMI_BUS / PCH_ROUTER", image: "/images/motherboard.png" },
+      { id: "pcie-slots", name: "PCIe Expansion Slots (x16 / x4)", role: "Modular Add-in Card Slots", functioning: "High-speed differential serial lanes accommodating graphics cards, high-performance sound cards, and secondary NVMe expansion cards.", signal: "PCIe_LANE_TX / RX", image: "/images/motherboard.png" },
+      { id: "vrm", name: "Voltage Regulator Module (VRM)", role: "Multi-Phase DC-DC Step-Down", functioning: "Uses PWM buck controllers and high-efficiency MOSFETs to step down 12V from the PSU into clean, ripple-free ~1.2V core power.", signal: "PWM_PHASE / BUCK_FILTER", image: "/images/motherboard.png" }
+    ]
+  },
+  storage: {
+    overview: "/images/ssd.png",
+    parts: [
+      { id: "nand-flash", name: "3D NAND Flash Memory Blocks", role: "Non-Volatile Charge Trap Storage", functioning: "Vertically stacked floating-gate or charge-trap flash cells that trap electrons to store digital data permanently without power.", signal: "PAGE_PROG / BLOCK_ERASE", image: "/images/ssd.png" },
+      { id: "flash-controller", name: "Flash Memory Controller ASIC", role: "Flash Translation & ECC Engine", functioning: "Executes the Flash Translation Layer (FTL), handles wear leveling across flash blocks, and corrects read bit errors via LDPC ECC.", signal: "FTL_TRANSLATE / LDPC_CORR", image: "/images/ssd.png" },
+      { id: "dram-buffer", name: "DRAM Cache Buffer", role: "Lookup Table & Write Cache", functioning: "High-speed volatile RAM buffer that caches the FTL address mapping tables and temporarily absorbs incoming write bursts.", signal: "CACHE_BURST / WRITE_QUEUE", image: "/images/ssd.png" },
+      { id: "host-interface", name: "PCIe / NVMe Host Interface", role: "High-Throughput Host Bus Link", functioning: "Implements NVMe submission and completion queues directly over PCIe 4.0/5.0 lanes, achieving multiple gigabytes per second of transfer.", signal: "NVMe_QUEUE / PCIe_DMA", image: "/images/ssd.png" }
+    ]
+  },
+  psu: {
+    overview: "/images/psu.png",
+    parts: [
+      { id: "transformer", name: "AC-to-DC Step-Down Transformer", role: "High-Voltage Isolation & Conversion", functioning: "Steps down 115V/230V alternating current from wall electrical sockets to manageable low-voltage alternating current.", signal: "AC_MAINS / ISOLATED_AC", image: "/images/psu.png" },
+      { id: "switching-reg", name: "PWM Switching Regulator & Rectifier", role: "High-Efficiency DC Rectification", functioning: "Converts alternating current to direct current using high-frequency MOSFET switches and inductors operating at over 90% efficiency.", signal: "PWM_FEEDBACK / DC_FILTER", image: "/images/psu.png" },
+      { id: "power-rails", name: "Dedicated DC Voltage Rails", role: "Component Power Distribution", functioning: "Supplies dedicated, clean voltage lines: +12V for CPU and GPU, +5V for storage drives and USB ports, and +3.3V for motherboard logic.", signal: "+12V / +5V / +3.3V / GND", image: "/images/psu.png" },
+      { id: "protection-ic", name: "Protection Supervisory Circuit (OVP/OCP/SCP)", role: "Hardware Safety Shutdown", functioning: "Continuously checks rail voltages, current draw, and temperature, cutting main power instantly if a short circuit or surge occurs.", signal: "PWR_OK / FAULT_TRIP", image: "/images/psu.png" }
+    ]
+  },
+  "io-controller": {
+    overview: "/images/inputoutput.png",
+    parts: [
+      { id: "transceiver", name: "Protocol Physical Layer Transceivers", role: "Electrical Signal Transmission", functioning: "Transmits and receives differential serial bit signals for USB, SATA, and PCIe peripheral connections.", signal: "DIFF_TX / DIFF_RX", image: "/images/inputoutput.png" },
+      { id: "fifo-buffers", name: "Packet FIFO Buffers & Queues", role: "Rate Mismatch Absorption", functioning: "Elastic First-In First-Out hardware buffers that temporarily hold data packets to prevent data overrun during speed discrepancies.", signal: "FIFO_RD / FIFO_WR / FULL", image: "/images/inputoutput.png" },
+      { id: "interrupt-logic", name: "Interrupt Request (IRQ) Controller", role: "Asynchronous CPU Event Signaler", functioning: "Monitors peripheral device ready lines and asserts interrupt requests to alert the processor that an I/O event needs immediate servicing.", signal: "IRQ_LINE / INTA_ACK", image: "/images/inputoutput.png" },
+      { id: "csr-registers", name: "Command & Status Registers (CSR)", role: "Device Driver Control Interface", functioning: "Memory-mapped register ports through which device drivers write operation commands and read status information and error flags.", signal: "CSR_READ / CSR_WRITE", image: "/images/inputoutput.png" }
+    ]
+  },
+  network: {
+    overview: "/images/nic.png",
+    parts: [
+      { id: "phy-transceiver", name: "Ethernet PHY Transceiver", role: "Analog Signal Encoding & Decoding", functioning: "Converts digital bitstreams into differential analog voltage pulses suitable for transmission over Cat6 copper twisted pairs.", signal: "1000BASE-T / MDIX_PULSE", image: "/images/nic.png" },
+      { id: "mac-controller", name: "Media Access Controller (MAC)", role: "Frame Formatting & Checksum Verification", functioning: "Encapsulates outgoing data into Ethernet frames, calculates CRC-32 checksums, and filters incoming frames by MAC hardware address.", signal: "FRAME_TX / CRC32 / RX_EN", image: "/images/nic.png" },
+      { id: "packet-fifo", name: "Packet FIFO Buffers (SRAM)", role: "Burst Absorption & Queueing", functioning: "Dual-port SRAM buffers holding incoming network bursts and outgoing packet queues until the host or wire is ready to receive.", signal: "RX_FIFO / TX_FIFO", image: "/images/nic.png" },
+      { id: "dma-offload", name: "Network DMA Ring Engine", role: "Direct Zero-Copy Host Memory Transfer", functioning: "Transfers packet payloads directly to OS memory buffers without consuming CPU compute cycles, firing an IRQ when complete.", signal: "RING_DESC / HOST_DMA", image: "/images/nic.png" }
+    ]
+  },
+  mmu: {
+    overview: "/images/mmu.png",
+    parts: [
+      { id: "tlb", name: "Translation Lookaside Buffer (TLB)", role: "Virtual-to-Physical Address Cache", functioning: "Associative content-addressable memory that caches recent virtual-to-physical address mappings, translating addresses in a single cycle.", signal: "TLB_HIT / PHYS_PAGE", image: "/images/mmu.png" },
+      { id: "page-walker", name: "Hardware Page Table Walker", role: "Multi-Level Table Traversal", functioning: "Traverses multi-level page tables (PML4/PML5) in physical memory on TLB misses to retrieve page table entries.", signal: "CR3_BASE / PTE_LOAD", image: "/images/mmu.png" },
+      { id: "protection-unit", name: "Access Permission & Ring Check", role: "Privilege Level Enforcement", functioning: "Compares requested memory accesses against page table permission flags (Read/Write, User/Supervisor, No-Execute NX) to safeguard memory.", signal: "PROT_FAULT / RING_VERIFY", image: "/images/mmu.png" },
+      { id: "fault-generator", name: "Page Fault Interrupt Generator", role: "Kernel Trap Signal", functioning: "Fires Interrupt 14 (#PF) to signal the operating system when a requested page is not present in RAM or an access violation occurs.", signal: "#PF / EXCEPTION_14", image: "/images/mmu.png" }
+    ]
+  },
+  dma: {
+    overview: "/images/dma.png",
+    parts: [
+      { id: "channel-regs", name: "DMA Channel Control Registers", role: "Transfer Parameter Storage", functioning: "Stores the base source address, target destination address, and remaining byte count for independent direct memory copy operations.", signal: "SRC_ADDR / DST_ADDR / LEN", image: "/images/dma.png" },
+      { id: "burst-engine", name: "Burst Transfer Engine", role: "Autonomous High-Speed Data Copy", functioning: "Generates sequential memory addresses and burst read/write signals across the system bus without passing data through CPU registers.", signal: "BURST_RD / BURST_WR", image: "/images/dma.png" },
+      { id: "arbiter-handshake", name: "Bus Request / Grant Arbiter", role: "CPU Bus Master Handshake", functioning: "Asserts the HOLD signal to request bus ownership from the CPU and waits for the HLDA acknowledge signal before initiating transfers.", signal: "HOLD_REQ / HLDA_ACK", image: "/images/dma.png" },
+      { id: "tc-interrupt", name: "Terminal Count Interrupt Logic", role: "Completion & Status Reporting", functioning: "Monitors the transfer byte counter and fires a Terminal Count (TC) interrupt to notify the operating system that the transfer has completed.", signal: "TC_INT / STATUS_DONE", image: "/images/dma.png" }
+    ]
+  },
+  clock: {
+    overview: "/images/systemclock.png",
+    parts: [
+      { id: "crystal-oscillator", name: "Quartz Crystal Resonator", role: "Piezoelectric Base Reference Pulse", functioning: "Vibrates mechanically under an applied electrical voltage to generate a steady, ultra-accurate 100 MHz reference clock pulse.", signal: "OSC_OUT_100MHz", image: "/images/systemclock.png" },
+      { id: "pll-multiplier", name: "Phase-Locked Loop (PLL)", role: "Frequency Synthesizer & Multiplier", functioning: "Multiplies the 100 MHz reference clock up to multiple gigahertz operating frequencies needed by modern processor cores.", signal: "PLL_VCO / CORE_CLK", image: "/images/systemclock.png" },
+      { id: "clock-tree", name: "Balanced Clock Distribution Tree", role: "Low-Skew Clock Routing", functioning: "Symmetrical branching distribution network that delivers sharp clock edges to billions of transistors simultaneously with near-zero clock skew.", signal: "H_TREE / SKEW_SYNC", image: "/images/systemclock.png" },
+      { id: "clock-gating", name: "Dynamic Clock Gating Unit", role: "Power & Heat Conservation Switch", functioning: "Dynamically disables the clock signal to inactive CPU cores and ALU functional units, cutting dynamic power consumption and heat.", signal: "GATE_EN / SLEEP_CLK", image: "/images/systemclock.png" }
+    ]
+  },
+  firmware: {
+    overview: "/images/firmware.png",
+    parts: [
+      { id: "spi-rom", name: "SPI NOR Flash ROM", role: "Non-Volatile System Firmware Storage", functioning: "Contains permanent UEFI / BIOS boot code, power-on diagnostics, ACPI tables, and platform hardware configuration profiles.", signal: "SPI_SCK / MISO / MOSI", image: "/images/firmware.png" },
+      { id: "post-engine", name: "Power-On Self-Test (POST) Engine", role: "Hardware Diagnostic Verification", functioning: "Validates CPU internal state, tests memory channel stability, enumerates PCIe buses, and reports errors via POST hex codes or beeps.", signal: "POST_CODE / DIAG_OK", image: "/images/firmware.png" },
+      { id: "dxe-dispatcher", name: "Driver Execution Environment (DXE)", role: "Modular Hardware Initialization", functioning: "Loads UEFI firmware drivers into RAM to initialize graphical display consoles, USB keyboards, and storage controllers.", signal: "DXE_LOAD / PROTOCOL_INIT", image: "/images/firmware.png" },
+      { id: "boot-manager", name: "UEFI Boot Manager & OS Handoff", role: "Operating System Kernel Loader", functioning: "Scans GUID Partition Table (GPT) disks for EFI boot partitions, loads the OS bootloader into memory, and hands over CPU execution.", signal: "EXIT_BOOT_SERVICES", image: "/images/firmware.png" }
+    ]
+  },
+  cooling: {
+    overview: "/images/cooling.png",
+    parts: [
+      { id: "vapor-heatpipes", name: "Copper Coldplate & Vapor Heatpipes", role: "Phase-Change Heat Extraction", functioning: "Absorbs heat from the CPU integrated heat spreader; liquid inside sealed copper vacuum pipes evaporates and carries heat rapidly away.", signal: "THERMAL_CONDUCTION", image: "/images/cooling.png" },
+      { id: "fin-stack", name: "High-Density Aluminum Fin Stack", role: "Ambient Dissipation Surface", functioning: "Multiplies available cooling surface area hundreds of times, transferring heat from heatpipes into ambient passing air.", signal: "HEAT_CONVECTION", image: "/images/cooling.png" },
+      { id: "pwm-fan", name: "PWM Static-Pressure Fan / Pump", role: "Forced Convection Airflow", functioning: "Spins high-pressure impeller blades using a 4-pin PWM signal to force cool ambient air across the radiator fins or circulate liquid coolant.", signal: "PWM_DUTY / TACH_RPM", image: "/images/cooling.png" },
+      { id: "thermal-sensors", name: "Silicon Thermal Diode Array", role: "Dynamic Temperature Monitoring", functioning: "Monitors junction temperatures across CPU cores in real-time, signaling the motherboard controller to adjust fan speeds or trigger thermal throttling.", signal: "PROCHOT# / DTS_TEMP", image: "/images/cooling.png" }
+    ]
+  }
 };
 
 function getMedia(id) {
-  const media = componentMedia[id] || componentMedia.cpu;
+  const media = componentMedia[id] || componentMedia["system-architecture"] || componentMedia.cpu;
+  const count = media.parts.length;
   return {
     overview: media.overview,
     views: [
       { id: "overview", label: "Overview", image: media.overview },
       { id: "detail", label: "Detail", image: media.overview }
     ],
-    parts: media.parts.map(([partId, name, image, left]) => ({ id: partId, name, image, position: [left, 50] }))
+    parts: media.parts.map((part, index) => {
+      const left = count > 1 ? 16 + (index * 68) / (count - 1) : 50;
+      const isTop = index % 2 === 0;
+      return {
+        ...part,
+        position: [left, isTop ? 22 : 78]
+      };
+    })
   };
 }
 
@@ -360,7 +519,8 @@ export const systemData = [
   }
 ];
 
-export function getComponent(id = "cpu") {
+export function getComponent(id = "cpu", language = "en") {
   const item = architectureComponents.find((component) => component.id === id) || architectureComponents[0];
-  return { ...item, media: getMedia(item.id) };
+  const full = { ...item, media: getMedia(item.id) };
+  return getLocalizedComponent(full, language);
 }

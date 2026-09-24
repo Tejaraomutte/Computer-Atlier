@@ -1,43 +1,371 @@
-@media (max-width:1250px) {
-  .explorer-layout { grid-template-columns:250px minmax(450px,1fr); align-items:start; }
-  .info-panel { grid-column:1/-1; min-height:auto; }
-  .content-grid, .home-grid { grid-template-columns:1fr 1fr; }
-  .header-search { width:190px; }
+/* Responsive design rules */
+
+/* Large Tablets & Medium Screens */
+@media (max-width: 1250px) {
+  .explorer-layout {
+    grid-template-columns: 260px minmax(420px, 1fr);
+    align-items: start;
+    width: calc(100% - 32px);
+  }
+  .info-panel {
+    grid-column: 1 / -1;
+    min-height: auto;
+  }
+  .content-grid, .home-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .header-search {
+    width: 220px;
+  }
+  .header-search:focus-within {
+    width: 260px;
+  }
 }
-@media (max-width:900px) {
-  .header { padding:0 15px; }
-  .main-nav { display:none; }
-  .info-panel h1 { font-size:32px; }
-  .system-output-page { width:calc(100% - 28px); padding-top:30px; }
-  .system-diagram { min-height:430px; padding:20px 14px; }
-  .system-flow { justify-content:flex-start; gap:8px; overflow-x:auto; padding:20px 4px; }
-  .system-flow-node { min-width:112px; min-height:84px; padding:12px; }
-  .system-flow-node strong { font-size:12px; }
-  .system-flow-arrow { font-size:20px; }
-  .explorer-layout { width:calc(100% - 24px); display:flex; flex-direction:column; }
-  .library-panel { height:auto; min-height:auto; max-height:none; overflow:visible; }
-  .component-list { display:grid; grid-template-columns:repeat(2,1fr); }
-  .viewer-panel { height:650px; min-height:650px; }
-  .home-feature { flex-direction:column; }
-  .simulation-grid, .content-grid, .home-grid, .lesson-grid { grid-template-columns:1fr; }
+
+/* Tablets & Mobile Screens (<= 900px) */
+@media (max-width: 900px) {
+  .header {
+    height: 64px;
+    padding: 0 14px;
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  /* Desktop nav hidden, replaced by bottom navigation */
+  .main-nav {
+    display: none;
+  }
+
+  .logo {
+    font-size: 18px;
+    letter-spacing: -0.03em;
+  }
+
+  /* Search remains accessible */
+  .header-search-wrapper {
+    flex: 1;
+    max-width: 280px;
+  }
+
+  .header-search {
+    width: 100% !important;
+    height: 38px;
+    padding: 0 6px 0 8px;
+    gap: 5px;
+  }
+
+  .header-search input {
+    font-size: 12.5px;
+  }
+
+  .search-dropdown-menu {
+    position: fixed;
+    top: 66px;
+    left: 10px;
+    right: 10px;
+    width: auto !important;
+    max-width: none;
+    max-height: calc(100vh - 140px);
+  }
+
+  /* Language Selector: ALWAYS VISIBLE ON MOBILE */
+  .language-selector {
+    display: flex !important;
+    padding: 6px 9px;
+    font-size: 12px;
+    gap: 4px;
+    border-radius: 10px;
+  }
+
+  .language-options {
+    position: fixed;
+    top: 66px;
+    right: 12px;
+    min-width: 150px;
+    max-height: 320px;
+  }
+
+  .profile-button {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
+  }
+
+  /* Bottom page clearance for bottom navigation */
+  .page,
+  .explorer-container,
+  .system-output-page {
+    padding-bottom: 85px !important;
+  }
+
+  /* Explorer layout on mobile */
+  .explorer-layout {
+    width: calc(100% - 24px);
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+    gap: 14px;
+  }
+
+  .viewer-panel {
+    height: auto;
+    min-height: 480px;
+    border-radius: 16px;
+  }
+
+  .library-panel {
+    height: auto;
+    min-height: 400px;
+    max-height: none;
+    border-radius: 16px;
+  }
+
+  .info-panel {
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .info-panel h1 {
+    font-size: 26px;
+  }
+
+  .component-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  /* Content & Home Grids */
+  .simulation-grid, .content-grid, .home-grid, .lesson-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+    line-height: 1.15;
+  }
+
+  .hero p {
+    font-size: 15px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-actions a {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .system-flow {
+    justify-content: flex-start;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 16px 4px;
+  }
+
+  .system-flow-node {
+    min-width: 100px;
+    min-height: 76px;
+    padding: 10px;
+  }
 }
-@media (max-width:600px) {
-  .header { height:62px; }
-  .logo { font-size:17px; }
-  .header-search, .language-selector { display:none; }
-  .page { width:calc(100% - 28px); padding-top:35px; }
-  .page-heading h1 { font-size:40px; }
-  .hero h1 { font-size:52px; }
-  .component-list { grid-template-columns:1fr; }
-  .viewer-panel { height:620px; min-height:620px; }
-  .viewer-toolbar { left:10px; top:auto; bottom:55px; transform:none; width:auto; flex-direction:row; }
-  .toolbar-button { min-height:48px; width:52px; }
-  .viewer-tip { right:10px; top:10px; width:155px; }
-  .viewer-footer { left:15px; font-size:7px; }
-  .info-panel { padding:18px; }
-  .info-panel h1 { font-size:32px; }
-  .stage-list { flex-direction:column; }
-  .sim-inputs { grid-template-columns:1fr; }
-  .beginner-guide { padding:20px 16px; }
-  .term-grid { grid-template-columns:1fr; }
+
+/* Small Smartphone Screens (<= 600px) */
+@media (max-width: 600px) {
+  .header {
+    height: 58px;
+    padding: 0 10px;
+    gap: 6px;
+  }
+
+  .logo {
+    font-size: 15px;
+  }
+
+  .header-search-wrapper {
+    max-width: 180px;
+  }
+
+  .search-action-btn {
+    display: none; /* Keep clean on small mobile */
+  }
+
+  .language-selector {
+    padding: 5px 8px;
+    font-size: 11px;
+    gap: 3px;
+  }
+
+  .page {
+    width: calc(100% - 20px);
+    padding-top: 20px;
+  }
+
+  .page-heading h1 {
+    font-size: 26px;
+  }
+
+  .page-heading p {
+    font-size: 13px;
+  }
+
+  .hero h1 {
+    font-size: 29px;
+  }
+
+  .hero p {
+    font-size: 13.5px;
+  }
+
+  .component-list {
+    grid-template-columns: 1fr;
+  }
+
+  .viewer-panel {
+    min-height: 440px;
+  }
+
+  .viewer-asset-header {
+    top: 10px;
+    left: 12px;
+    right: 12px;
+  }
+
+  .viewer-asset-header h2 {
+    font-size: 19px;
+  }
+
+  .viewer-asset-header p {
+    font-size: 11px;
+  }
+
+  .viewer-mode-switch {
+    top: 10px;
+  }
+
+  .viewer-mode-switch button {
+    padding: 5px 8px;
+    font-size: 9.5px;
+  }
+
+  .image-viewer {
+    padding: 55px 10px 40px;
+  }
+
+  .component-image-wrap {
+    max-height: 250px;
+    border-radius: 12px;
+  }
+
+  /* Structural diagram on small mobile */
+  .structural-diagram {
+    font-size: 9px;
+  }
+
+  .diagram-header {
+    top: 8px;
+    left: 10px;
+    right: 10px;
+    font-size: 7.5px;
+  }
+
+  .diagram-core {
+    max-width: 90%;
+    padding: 8px 10px;
+  }
+
+  .diagram-core-part-name {
+    font-size: 11px;
+  }
+
+  .diagram-core-functioning {
+    font-size: 9.5px;
+    max-height: 52px;
+  }
+
+  .diagram-node-card {
+    padding: 4px 6px;
+    min-width: 60px;
+  }
+
+  .node-title {
+    font-size: 9.5px;
+  }
+
+  .node-role {
+    font-size: 7.5px;
+  }
+
+  .node-module-num {
+    display: none;
+  }
+
+  .diagram-footer {
+    bottom: 8px;
+    left: 10px;
+    right: 10px;
+    font-size: 7.5px;
+  }
+
+  .active-part-caption {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 10px;
+  }
+
+  .caption-badge {
+    font-size: 8px;
+    padding: 2px 6px;
+  }
+
+  .caption-text {
+    font-size: 11px;
+  }
+
+  .caption-default-hint {
+    font-size: 10px;
+  }
+
+  .viewer-footer {
+    left: 10px;
+    bottom: 10px;
+    font-size: 6.5px;
+  }
+
+  .info-panel {
+    padding: 14px;
+  }
+
+  .info-panel h1 {
+    font-size: 22px;
+  }
+
+  .tagline {
+    font-size: 12px;
+  }
+
+  .description {
+    font-size: 12.5px;
+  }
+
+  .facts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sim-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  .beginner-guide {
+    padding: 16px 12px;
+  }
+
+  .term-grid {
+    grid-template-columns: 1fr;
+  }
 }

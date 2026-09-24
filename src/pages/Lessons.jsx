@@ -1,16 +1,18 @@
 import { Link } from "react-router-dom";
 import { useLearningContext } from "../context/LearningContext.jsx";
 import { memoryLessons } from "../data/lessons/memoryLessons.js";
+import useArchitecture from "../hooks/useArchitecture.js";
 
 export default function Lessons() {
   const { completedLessons, quizScores, lessonProgress } = useLearningContext();
+  const { t } = useArchitecture();
 
   return (
     <main className="page">
       <div className="page-heading">
-        <span>LESSONS</span>
-        <h1>Memory essentials</h1>
-        <p>Simple lessons for beginners on memory hierarchy, main memory, virtual memory, and secondary memory.</p>
+        <span>{t.lessonsSection || "LESSONS"}</span>
+        <h1>{t.memHierarchy || "Memory essentials"}</h1>
+        <p>{t.memHierarchyDesc || "Simple lessons for beginners on memory hierarchy, main memory, virtual memory, and secondary memory."}</p>
       </div>
 
       <div className="lesson-grid memory-lesson-grid">
@@ -35,7 +37,9 @@ export default function Lessons() {
               <div className="memory-card-meta">
                 {score !== undefined ? <span>Quiz: {score}/{lesson.objectives.length || 5}</span> : <span>Quiz: not attempted</span>}
               </div>
-              <Link className="card-link" to={`/en/lessons/${lesson.id}`}>Explore lesson →</Link>
+              <Link className="card-link" to={`/en/lessons/${lesson.id}`}>
+                {t.exploreLesson || "Explore lesson →"}
+              </Link>
             </article>
           );
         })}

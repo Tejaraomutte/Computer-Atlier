@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import ArchitectureScene from "../../three/scene/ArchitectureScene.jsx";
-import ControlToolbar from "./ControlToolbar.jsx";
-import ViewerTip from "./ViewerTip.jsx";
 import Hotspot from "./Hotspot.jsx";
 import StructuralDiagram from "./StructuralDiagram.jsx";
 import { getComponent } from "../../data/architectureData.js";
@@ -11,33 +9,21 @@ import useArchitecture from "../../hooks/useArchitecture.js";
 export default function ArchitectureViewer({ selected, onSelect }) {
   const controlsRef = useRef();
   const viewerRef = useRef(null);
-  const { t } = useArchitecture();
-  const { isolated, setIsolated, dataFlow, setDataFlow, layers, setLayers } = useViewer();
-  const [layersOpen, setLayersOpen] = useState(false);
+  const { language, t } = useArchitecture();
+  const { isolated, setIsolated, dataFlow, setDataFlow, layers } = useViewer();
   const [viewMode, setViewMode] = useState("description");
-  const [systemViewMode, setSystemViewMode] = useState("description");
   const [selectedPart, setSelectedPart] = useState(null);
-  const item = getComponent(selected);
-  const activePart = item.media.parts.find((part) => part.id === selectedPart);
+  const [hoveredPart, setHoveredPart] = useState(null);
+
+  const item = getComponent(selected, language);
+  const activePartId = hoveredPart || selectedPart;
+  const activePart = item.media.parts.find((part) => part.id === activePartId);
 
   useEffect(() => {
     setSelectedPart(null);
+    setHoveredPart(null);
+    setViewMode("description");
   }, [selected]);
-
-  function reset() {
-    controlsRef.current?.reset();
-    setIsolated(null);
-    setDataFlow(false);
-  }
-
-  function isolate() {
-    setIsolated((value) => value === selected ? null : selected);
-  }
-
-  function zoomIn() {
-    const c = controlsRef.current;
-    if (c?.object) c.object.position.multiplyScalar(0.88);
-  }
 
   const componentImageOptions = {
     "system-architecture": ["/images/motherboard.png"],
@@ -66,73 +52,123 @@ export default function ArchitectureViewer({ selected, onSelect }) {
   const isCpuImageScene = !isSystemArchitecture && Boolean(componentImageOptions[selected]);
   const stageTitle = item?.name || "CPU";
   const stageSubtitle = item?.tagline || item?.description || "Complete architecture information";
-  const showSystemDescription = isSystemArchitecture && systemViewMode === "description";
-  const showSystemImageView = isSystemArchitecture && systemViewMode === "image";
 
   return (
     <main className="viewer-panel">
-      {isCpuImageScene && (
+      {viewMode === "description" && isCpuImageScene && (
         <div className="viewer-asset-header">
-          <span className="viewer-asset-kicker">COMPLETE INFORMATION</span>
+          <span className="viewer-asset-kicker">{t.completeInfo || "COMPLETE INFORMATION"}</span>
           <h2>{stageTitle}</h2>
           <p>{stageSubtitle}</p>
         </div>
       )}
+
       <div className="canvas-container">
-        {isSystemArchitecture ? (
-          showSystemDescription ? (
-            <ArchitectureScene selected={selected} onSelect={onSelect} isolated={isolated} layers={layers} dataFlow={dataFlow} controlsRef={controlsRef} />
-          ) : (
-            <section className="image-viewer" aria-label={`${item.name} architecture image viewer`}>
-              <div className="image-viewer-heading"><span>{t.componentView}</span><strong>{activePart?.name || item.name}</strong></div>
-              <div className="component-image-wrap">
-                <StructuralDiagram component={item} parts={item.media.parts} />
-                {item.media.parts.map((part) => <Hotspot key={part.id} position={part.position} label={part.name} color={item.color} onClick={() => setSelectedPart(part.id)} />)}
-              </div>
-              <div className="image-viewer-caption">{activePart ? <button type="button" onClick={() => setSelectedPart(null)}>{t.backOverview}</button> : t.pointMarker}</div>
-            </section>
-          )
-        ) : viewMode === "description" ? (
-          isCpuImageScene ? (
-            <div ref={viewerRef} className="cpu-static-scene">
-              <img
-                src={selectedImage}
-                alt={`${selected} architecture illustration`}
-                draggable="false"
-                onError={(event) => {
-                  if (!event.target.dataset.fallbackApplied) {
-                    event.target.dataset.fallbackApplied = "true";
-                    event.target.src = "/images/cpu.png";
-                  }
-                }}
-              />
-            </div>
-          ) : (
-            <ArchitectureScene selected={selected} onSelect={onSelect} isolated={isolated} layers={layers} dataFlow={dataFlow} controlsRef={controlsRef} />
-          )
-        ) : (
+        {viewMode === "image" ? (
           <section className="image-viewer" aria-label={`${item.name} architecture image viewer`}>
-            <div className="image-viewer-heading"><span>{t.componentView}</span><strong>{activePart?.name || item.name}</strong></div>
-            <div className="component-image-wrap">
-              <StructuralDiagram component={item} parts={item.media.parts} />
-              {item.media.parts.map((part) => <Hotspot key={part.id} position={part.position} label={part.name} color={item.color} onClick={() => setSelectedPart(part.id)} />)}
+            <div className="image-viewer-heading">
+              <span>{t.componentView || "Component View"}</span>
+              <strong>{activePart ? `${activePart.name} · ${activePart.role}` : item.name}</strong>
             </div>
-            <div className="image-viewer-caption">{activePart ? <button type="button" onClick={() => setSelectedPart(null)}>{t.backOverview}</button> : t.pointMarker}</div>
+
+            <div className="component-image-wrap">
+              <StructuralDiagram
+                component={item}
+                parts={item.media.parts}
+                selectedPart={selectedPart}
+                onSelectPart={setSelectedPart}
+                hoveredPart={hoveredPart}
+                onHoverPart={setHoveredPart}
+              />
+
+              {item.media.parts.map((part) => (
+                <Hotspot
+                  key={part.id}
+                  position={part.position}
+                  label={part.name}
+                  role={part.role}
+                  color={item.color}
+                  isActive={activePartId === part.id}
+                  onClick={() => setSelectedPart(selectedPart === part.id ? null : part.id)}
+                  onMouseEnter={() => setHoveredPart(part.id)}
+                  onMouseLeave={() => setHoveredPart(null)}
+                />
+              ))}
+            </div>
+
+            <div className="image-viewer-caption">
+              {activePart ? (
+                <div className="active-part-caption">
+                  <span className="caption-badge">{t.functioning || "FUNCTIONING"}</span>
+                  <span className="caption-text">{activePart.functioning}</span>
+                  {selectedPart && (
+                    <button type="button" className="caption-clear-btn" onClick={() => setSelectedPart(null)}>
+                      {t.backOverview || "Back to overview"}
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <span className="caption-default-hint">
+                  {t.pointMarkerHint || "Point to a marker or hover over any module to inspect its functioning"}
+                </span>
+              )}
+            </div>
           </section>
+        ) : isSystemArchitecture ? (
+          <ArchitectureScene
+            selected={selected}
+            onSelect={onSelect}
+            isolated={isolated}
+            layers={layers}
+            dataFlow={dataFlow}
+            controlsRef={controlsRef}
+          />
+        ) : isCpuImageScene ? (
+          <div ref={viewerRef} className="cpu-static-scene">
+            <img
+              src={selectedImage}
+              alt={`${selected} architecture illustration`}
+              draggable="false"
+              onError={(event) => {
+                if (!event.target.dataset.fallbackApplied) {
+                  event.target.dataset.fallbackApplied = "true";
+                  event.target.src = "/images/cpu.png";
+                }
+              }}
+            />
+          </div>
+        ) : (
+          <ArchitectureScene
+            selected={selected}
+            onSelect={onSelect}
+            isolated={isolated}
+            layers={layers}
+            dataFlow={dataFlow}
+            controlsRef={controlsRef}
+          />
         )}
       </div>
-      {isSystemArchitecture ? (
-        <div className="viewer-mode-switch" role="group" aria-label="System architecture view mode">
-          <button type="button" className={showSystemDescription ? "active" : ""} onClick={() => setSystemViewMode("description")}>Description</button>
-          <button type="button" className={showSystemImageView ? "active" : ""} onClick={() => setSystemViewMode("image")}>Image view</button>
-        </div>
-      ) : !isCpuImageScene && (
-        <div className="viewer-mode-switch" role="group" aria-label="Viewer mode">
-          <button type="button" className={viewMode === "description" ? "active" : ""} onClick={() => setViewMode("description")}>Description</button>
-          <button type="button" className={viewMode === "image" ? "active" : ""} onClick={() => setViewMode("image")}>Image view</button>
-        </div>
+
+      <div className="viewer-mode-switch" role="group" aria-label="Viewer mode">
+        <button
+          type="button"
+          className={viewMode === "description" ? "active" : ""}
+          onClick={() => setViewMode("description")}
+        >
+          {isSystemArchitecture ? (t.scene3D || "3D Scene") : (t.detailedVersion || "Detailed Version")}
+        </button>
+        <button
+          type="button"
+          className={viewMode === "image" ? "active" : ""}
+          onClick={() => setViewMode("image")}
+        >
+          {t.componentView || "Component View"}
+        </button>
+      </div>
+
+      {viewMode === "description" && !isCpuImageScene && (
+        <div className="viewer-footer">{t.threeFooter}</div>
       )}
-      {!isCpuImageScene && <div className="viewer-footer">{t.threeFooter}</div>}
     </main>
   );
 }

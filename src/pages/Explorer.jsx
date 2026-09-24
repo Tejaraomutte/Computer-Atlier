@@ -8,8 +8,8 @@ export default function Explorer() {
 
   return (
     <main className="explorer-layout">
-      <ArchitectureLibrary selected={selected} onSelect={setSelected}/>
-      <ArchitectureViewer selected={selected} onSelect={setSelected}/>
+      <ArchitectureLibrary selected={selected} onSelect={setSelected} />
+      <ArchitectureViewer selected={selected} onSelect={setSelected} />
       <InfoPanel selected={selected} />
     </main>
   );
